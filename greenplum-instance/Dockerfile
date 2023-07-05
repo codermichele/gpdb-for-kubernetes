@@ -101,12 +101,12 @@ RUN ln -s ${TOOLS_DIR} /home/gpadmin/tools
 
 # Initialize pxf directories; needs GPHOME set
 #RUN /bin/bash -c 'source /usr/local/greenplum-db/greenplum_path.sh && /usr/local/pxf/bin/pxf init'
-RUN /bin/bash -c 'source /usr/local/greenplum-db/greenplum_path.sh && /usr/local/pxf/bin/pxf init'
+RUN /bin/bash -c 'source /usr/local/greenplum-db/greenplum_path.sh'
 
 EXPOSE 22
 
 ARG VERSION=dev
-ARG DATE=unknown
+ARG DATE="5 July 2023"
 ARG LICENSE="https://www.apache.org/licenses/LICENSE-2.0"
 
 LABEL name="Greenplum for Kubernetes" \
