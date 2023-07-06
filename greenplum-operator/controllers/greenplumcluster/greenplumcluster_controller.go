@@ -32,7 +32,7 @@ import (
 
 const (
 	StopClusterFinalizer           = "stopcluster.greenplumcluster.pivotal.io"
-	SupportedGreenplumMajorVersion = "7"
+	SupportedGreenplumMajorVersion = "6"
 )
 
 // GreenplumClusterReconciler reconciles a GreenplumCluster object

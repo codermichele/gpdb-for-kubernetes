@@ -161,14 +161,14 @@ gke-deploy:
 
 .PHONY: deploy-gpdb
 deploy-gpdb:
-	cat ../workspace/my-gp-instance.yaml | kubectl create -f -
-	cmd/greenplumReady/greenplumReady
+	./minikube/install-dir/kubectl create -f /home/guest1/gpdb-for-kubernetes/workspace/my-gp-instance.yaml
+	# cmd/greenplumReady/greenplumReady
 
 .PHONY: gke-deploy-gpdb
 gke-deploy-gpdb: deploy-gpdb
 
 .PHONY: deploy-operator
-deploy-operator: regsecret cmd/greenplumReady/greenplumReady
+deploy-operator: # regsecret cmd/greenplumReady/greenplumReady
 	OPERATOR_IMAGE_REPO=$$(yq r operator/values.yaml operatorImageRepository) \
 	OPERATOR_IMAGE_TAG=$$(yq r operator/values.yaml operatorImageTag) \
 	GREENPLUM_IMAGE_REPO=$$(yq r operator/values.yaml greenplumImageRepository) \
@@ -184,13 +184,13 @@ gke-deploy-operator: regsecret cmd/greenplumReady/greenplumReady
 
 .PHONY: deploy-operator-impl
 deploy-operator-impl:
-	helm install greenplum-operator ./operator \
-		--set operatorImageRepository=$$OPERATOR_IMAGE_REPO \
-		--set operatorImageTag=$$OPERATOR_IMAGE_TAG \
-		--set greenplumImageRepository=$$GREENPLUM_IMAGE_REPO \
-		--set greenplumImageTag=$$GREENPLUM_IMAGE_TAG
+	./minikube/install-dir/helm install greenplum-operator ./operator \
+		--set operatorImageRepository="jike21/greenplum-operator" \
+		--set operatorImageTag="build-all-stable-rebased-20230704" \
+		--set greenplumImageRepository="jike21/greenplum-gp4k" \
+		--set greenplumImageTag="v1"
 	for i in {1..3}; \
-		do kubectl wait --for condition=available deployment.apps/greenplum-operator && break || sleep 1; \
+	    do ./minikube/install-dir/kubectl wait --for condition=available deployment.apps/greenplum-operator && break || sleep 1; \
 	done
 
 .PHONY: deploy-clean
